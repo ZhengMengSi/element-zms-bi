@@ -18,6 +18,11 @@
             @click="handleShortcutClick(shortcut)">{{shortcut.text}}</button>
         </div>
         <div class="el-picker-panel__body">
+          <div class="el-date-range-picker__custom">
+            <div :class="{'el-date-range-picker__custom-active': isDynamicDate}" class="el-date-range-picker__custom-default" @click="isDynamicDate = true">动态时间</div>
+            <div :class="{'el-date-range-picker__custom-active': !isDynamicDate}" class="el-date-range-picker__custom-default" @click="isDynamicDate = false">静态时间</div>
+            <div class="el-date-range-picker__custom-default">{{topDate}}</div>
+          </div>
           <div class="el-date-range-picker__time-header" v-if="showTime">
             <span class="el-date-range-picker__editors-wrap">
               <span class="el-date-range-picker__time-picker-wrap">
@@ -226,6 +231,25 @@
     directives: { Clickoutside },
 
     computed: {
+      topDate() {
+        if (this.minDate && this.maxDate) {
+          let oneday = 24 * 60 * 60 * 1000;
+          let leftDiff = Math.floor((new Date().getTime() - this.minDate.getTime()) / oneday);
+          let rightDiff = Math.floor((new Date().getTime() - this.maxDate.getTime()) / oneday);
+          let dynamicDate = '';
+          if (rightDiff === 0) {
+            dynamicDate = (leftDiff === 0) ? '今日' : `最近${leftDiff + 1}天`;
+          } else if (rightDiff === 1) {
+            dynamicDate = (leftDiff === 1) ? '昨日' : `过去${leftDiff}天`;
+          } else if (rightDiff === 2 && leftDiff === 2) {
+            dynamicDate = '前日';
+          } else {
+            dynamicDate = `过去${leftDiff}天 ~ 过去${rightDiff}天`;
+          }
+          return this.isDynamicDate ? '(' + dynamicDate + ')' : '(' + this.minDate.getFullYear() + ' ' + this.t('el.datepicker.year') + ' ' + this.t(`el.datepicker.month${ this.minDate.getMonth() + 1 }`) + this.minDate.getDate() + '日' + ' ~ ' + this.maxDate.getFullYear() + ' ' + this.t('el.datepicker.year') + ' ' + this.t(`el.datepicker.month${ this.maxDate.getMonth() + 1 }`) + this.maxDate.getDate() + '日' + ')';
+        }
+      },
+
       btnDisabled() {
         return !(this.minDate && this.maxDate && !this.selecting && this.isValidValue([this.minDate, this.maxDate]));
       },
@@ -321,6 +345,7 @@
         defaultTime: null,
         minDate: '',
         maxDate: '',
+        isDynamicDate: true,
         leftDate: new Date(),
         rightDate: nextMonth(new Date()),
         rangeState: {

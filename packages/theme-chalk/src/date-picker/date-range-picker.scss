@@ -16,6 +16,19 @@
     min-width: 513px;
   }
 
+  .el-date-range-picker__custom {
+    padding: 16px 16px 0 16px;
+    .el-date-range-picker__custom-default {
+      display: inline-block;
+      margin-right: 20px;
+      cursor: pointer;
+    }
+    .el-date-range-picker__custom-active {
+      border-bottom: 1px solid $--color-primary;
+      color: $--color-primary;
+    }
+  }
+
   .el-picker-panel__content {
     margin: 0;
   }
