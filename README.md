@@ -1,3 +1,6 @@
+修改时间日期选择器：新增动态时间和静态时间
+![image](https://user-images.githubusercontent.com/23291466/137244496-24b3c5cf-eaea-445b-9d27-396552eb29c5.png)
+
 <p align="center">
   <img src="https://cdn.rawgit.com/ElemeFE/element/dev/element_logo.svg">
 </p>
